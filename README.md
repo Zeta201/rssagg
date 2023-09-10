@@ -1,2 +1,2 @@
 # rssagg
-Rest API Implemented With GoLang, Postgre
+Rest API Implemented With GoLang, Postgres
