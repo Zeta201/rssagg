@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Zeta201/rssagg/internal/database"
+	"github.com/Zeta201/rssagg/internal/database/auth"
 	"github.com/goccy/go-json"
 	"github.com/google/uuid"
 )
@@ -33,6 +34,18 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 	if err != nil {
 		respondWithError(w, 400, fmt.Sprintf("Couldn't create user %v", err))
 	}
+	respondWithJson(w, 201, databaseUserToUser(user))
+}
+
+func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
+	apiKey, err := auth.GetAPIKey(r.Header)
+	if err != nil {
+		respondWithError(w, 403, fmt.Sprintf("Auth error:%v", err))
+	}
+	user, err := apiCfg.DB.GetUerByAPIKey(r.Context(), apiKey)
+	if err != nil {
+		respondWithError(w, 400, fmt.Sprintf("Couldn't get user:%v", err))
+	}
 	respondWithJson(w, 200, databaseUserToUser(user))
-	respondWithJson(w, 200, struct{}{})
+
 }
