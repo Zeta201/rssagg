@@ -1,1 +1,10 @@
 Goose -> handling migrations
+
+CLI
+dir: sql/schema
+goose postgres postgres://postgres:root@localhost:5432/rssagg up
+goose postgres postgres://postgres:root@localhost:5432/rssagg down
+
+dir: CrudApp
+
+docker run --rm -v ${PWD}:/src -w /src kjconroy/sqlc generate
